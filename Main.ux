@@ -1,0 +1,87 @@
+<App>
+    <JavaScript File="Menu.js" />
+    <EdgeNavigator>
+        <!-- Sidebar Menu -->
+        <Panel Name="Sidebar" Width="180" Background="#b5c0d1" EdgeNavigation.Edge="Left">
+            
+            <ScrollView>
+                <Grid RowCount=5 Alignment="Center" Height="70%" Margin="3,0">
+                    <Text ux:Class="Item" TextAlignment="Center" FontSize="20" Margin="0,10" />
+                    <Item Value="Item 1" />
+                    <Item Value="Item 2" />
+                    <Item Value="Item 3" />
+                    <Item Value="Item 4" />
+                    <Item Value="Item 5" />
+                </Grid>
+            </ScrollView>
+            <ActivatingAnimation>
+                <Change MainViewTranslation.X="{Property Sidebar.Width}" />
+                <Change TopMenuLineTranslation.Y=0 />
+                <Change BottomMenuLineTranslation.Y=0 />
+                <Change MiddleMenuLine.Opacity=0 Easing="CircularOut" />
+                <Change TopMenuLineRotation.Degrees=-45 Easing="ExponentialIn" />
+                <Change BottomMenuLineRotation.Degrees=45 Easing="ExponentialIn" />
+            </ActivatingAnimation>
+            <WhileActive>
+                <Callback Handler="{openMenu}" />
+            </WhileActive>
+            <WhileInactive>
+                <Callback Handler="{closeMenu}" />
+            </WhileInactive>
+        </Panel>
+
+        <!-- The Main View -->
+        <DockPanel Name="MainView">
+            <Translation Name="MainViewTranslation" />
+
+            <!-- The Top Bar -->
+            <DockPanel Name="Topbar" Dock="Top" Height="80" Background="#efefef">                
+                <Rectangle Dock="Bottom" Height="2" Width="100%" Color="#454545" />
+
+                <Button Name="MenuButton" Dock="Left" Height=40 Width=40 Margin="10,3">
+                    <Rectangle ux:Class="MenuLine" Height=5 Width="100%" CornerRadius=100 Color="#000" />
+                    
+                    <MenuLine Name="TopMenuLine">
+                        <Translation Name="TopMenuLineTranslation" Y=-17 />
+                        <Rotation Name="TopMenuLineRotation" />
+                    </MenuLine>
+                    <MenuLine Name="MiddleMenuLine" />
+                    <MenuLine Name="BottomMenuLine">
+                        <Translation Name="BottomMenuLineTranslation" Y=17 />
+                        <Rotation Name="BottomMenuLineRotation" />
+                    </MenuLine>
+
+                    <WhilePressed>
+                        <Scale Factor=0.85 Easing="CubicInOut" Duration=0.1 />
+                    </WhilePressed>
+
+                    <WhileTrue Value="{isMenuOpen}">
+                        <Clicked>
+                            <NavigateTo Target="MainView" />
+                        </Clicked>
+                    </WhileTrue>
+                    <WhileFalse Value="{isMenuOpen}">
+                        <Clicked>
+                            <NavigateTo Target="Sidebar" />
+                        </Clicked>
+                    </WhileFalse>
+                </Button>
+                
+                <Text Value="Top Bar!" Color="#000" Alignment="Center" FontSize=35 Margin="0,0,50,0" />
+
+            </DockPanel>
+
+            <!-- The rest of the Main View -->
+            <ScrollView Dock="Fill">
+                <StackPanel>
+                    <Text ux:Class="ScrollyText" Color="#000" TextAlignment="Center" FontSize=50 Margin="0,30" />
+                    <ScrollyText Value="This" />
+                    <ScrollyText Value="Is" />
+                    <ScrollyText Value="A" />
+                    <ScrollyText Value="Scroll" />
+                    <ScrollyText Value="View" />
+                </StackPanel>
+            </ScrollView>
+        </DockPanel>
+    </EdgeNavigator>
+</App>
